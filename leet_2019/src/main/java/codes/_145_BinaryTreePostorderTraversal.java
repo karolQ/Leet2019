@@ -6,29 +6,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class _094_BinaryTreeInorderTraversal {
+public class _145_BinaryTreePostorderTraversal {
 
     // Iteration
-    public List<Integer> inorderTraversalIteration(TreeNode root) {
+    public List<Integer> postorderTraversalIteration(TreeNode root) {
         List<Integer> res = new ArrayList<>();
         if(root == null) return res;
-        Stack<TreeNode> stack = new Stack<>();
-
-        while(root != null || !stack.isEmpty()){
-            while(root != null){
-                stack.push(root);
-                root = root.left;
-            }
-            root = stack.pop();
-            res.add(root.val);
-            root = root.right;
+        TreeNode cur = root;
+        Stack<TreeNode> st = new Stack<>();
+        st.push(cur);
+        while(!st.isEmpty()) {
+            cur = st.pop();
+            res.add(0, cur.val);
+            if(cur.left != null) st.push(cur.left);
+            if(cur.right != null) st.push(cur.right);
         }
-
         return res;
     }
 
     // Recursion
-    public List<Integer> inorderTraversalRecursion(TreeNode root) {
+    public List<Integer> postorderTraversalRecrusion(TreeNode root) {
         List<Integer> res = new ArrayList<>();
         helper(res, root);
         return res;
@@ -36,8 +33,9 @@ public class _094_BinaryTreeInorderTraversal {
 
     private void helper(List<Integer> res, TreeNode root) {
         if(root == null) return;
+
         helper(res, root.left);
-        res.add(root.val);
         helper(res, root.right);
+        res.add(root.val);
     }
 }
